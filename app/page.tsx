@@ -3,12 +3,20 @@ import { useEffect } from "react"
 
 export default function Home() {
   useEffect(() => {
+    const content = "dog";
+
     const config = {
-      method: "GET",
-      "Content-Type": "application/json"
+      method: "POST",
+      "Content-Type": "application/json",
+      body: JSON.stringify({
+        content
+      })
     }
 
-    fetch("api/sheet", config)
+    // const uri = "api/sheet";
+    const uri = "api/openai"
+
+    fetch(uri, config)
       .then(res => res.json().then(data => console.log("dd", data)))
     })
 }

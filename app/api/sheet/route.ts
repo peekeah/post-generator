@@ -1,16 +1,12 @@
-import { getAuthToken, getSpreadSheetValues, writeSheet } from "./utils";
+import sheet from "./utils";
 
 export async function GET(
   _req: Request
 ) {
   try {
     
-    const auth = await getAuthToken();
-    const response = await getSpreadSheetValues({
-      auth,
-      sheetName: "Sheet1"
-    })
-
+    const response = await sheet.getSheetValues();
+    console.log("rr", response)
     return new Response(
       JSON.stringify({
         statue: true,
@@ -27,30 +23,3 @@ export async function GET(
   }
 }
 
-export async function POST(
-  _req: Request
-) {
-  try {
-    const auth = await getAuthToken();
-    await writeSheet({
-      auth,
-      tabName: "Sheet1",
-      range: "A:B",
-      data: [["hi", "there!"]]
-    })
-    return new Response(
-      JSON.stringify({
-        statue: true,
-        data: "Successfully added values!"
-      })
-    )
-  
-  } catch (err) {
-    return new Response(
-      JSON.stringify({
-        statue: false,
-        data: "Internal server error"
-      })
-    )
-  }
-}
