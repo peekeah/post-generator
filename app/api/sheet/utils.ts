@@ -1,5 +1,7 @@
 import { google } from "googleapis";
 
+import path from "path";
+
 const sheets = google.sheets('v4');
 
 // Google api credentials
@@ -8,7 +10,9 @@ const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 // Google api constants
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const CREDENTIAL_PATH="secret.json"
+// const CREDENTIAL_PATH= path.join(process.cwd(), "./secret.json");
+// const CREDENTIAL_PATH= path.resolve("secret.json");
+const CREDENTIAL_PATH = path.join(process.cwd(), 'secret.json');
 const sheetId = '17QAMB0mflPwJLIdw455YCwRNjsEthlgI1IKYaNTj-r0'
 const tabName = 'Sheet1'
 const range = 'A:C'
@@ -21,19 +25,11 @@ class Sheet {
       scopes: SCOPES,
       keyFile: CREDENTIAL_PATH
     });
+
     Promise.resolve(auth.getClient())
     .then(res => {
       this.auth = res
     })
-  }
-
-  getAuthToken = async() => {
-    const auth = new google.auth.GoogleAuth({
-      scopes: SCOPES,
-      keyFile: CREDENTIAL_PATH
-    });
-    const authToken = await auth.getClient();
-    return authToken;
   }
 
   getSpreadSheet = async() => {
@@ -53,6 +49,9 @@ class Sheet {
   }
 
   writeSheet = async(data: any) => {
+    if(!this.auth){
+      return;
+    }
     const payload = {
       auth: this.auth,
       spreadsheetId: sheetId,

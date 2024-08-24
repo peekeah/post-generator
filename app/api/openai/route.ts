@@ -5,6 +5,7 @@ export async function POST(
 ) {
   try {
     const OPENAI_KEY = process.env.OPENAI_KEY;
+
     const uri = "https://api.openai.com/v1/chat/completions";
 
     const request = await req.json()
@@ -33,17 +34,15 @@ export async function POST(
 
     const response = await fetch(uri, config)
     const data = await response.json();
-
     const result = data?.choices?.[0].message?.content;
 
     // Store data into sheet
     const sheetValues =[
       [content, result, new Date()]
     ]
-    
+
     await sheet.writeSheet(sheetValues)
 
-    console.log("ress", result)
     return new Response(
       JSON.stringify({
         status: true,
@@ -55,7 +54,8 @@ export async function POST(
     return new Response(
       JSON.stringify({
         status: false,
-        data: "Internal server error"
+        data: "Internal server error",
+        err: err
       })
     )
   }
