@@ -1,63 +1,63 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react"
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false)
-  const [content, setContent] = useState("")
-  const [result, setResult] = useState(null)
-
-  const router = useRouter();
-
-  const onSubmit = () => {
-    setLoading(() => true)
-    const config = {
-      method: "POST",
-      "Content-Type": "application/json",
-      body: JSON.stringify({
-        content
-      })
-    }
-
-    const uri = "api/openai"
-
-    fetch(uri, config)
-      .then(res => res.json().then(data => {
-        if(data?.status){
-          setResult(() => data?.data?.slice(1))
-        }
-        setLoading(() => false)
-      })).catch(err => {
-        console.log("err", err);
-      })
-  }
 
   return (
-    <div className="w-7/12 m-auto h-full mt-[7%] px-7 py-9 rounded-md bg-gray-500 grow-0 space-y-5">
-      <div className="flex flex-col gap-5 items-end">
-        <Textarea 
-          placeholder="Please enter the topic"
-          className="h-[120px] text-black"
-          value={content} 
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <Button 
-          onClick={onSubmit} 
-          disabled={loading}
-        >Generate post</Button>
-      </div>
-      <div className="h-36">
-        {
-          loading ? <Spinner /> :
-            (result ? result : null)
-        }
-      </div>
-      <div className="flex justify-end">
-        <Button onClick={() => router.push("history")}>View history</Button>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-6 w-6 text-primary" />
+            <span className="text-xl font-bold">PostAI</span>
+          </div>
+          <nav className="hidden md:flex items-center gap-6">
+            <Link href="#features" className="text-sm font-medium hover:text-primary">
+              Features
+            </Link>
+            <Link href="#pricing" className="text-sm font-medium hover:text-primary">
+              Pricing
+            </Link>
+            <Link href="#testimonials" className="text-sm font-medium hover:text-primary">
+              Testimonials
+            </Link>
+          </nav>
+          <div className="flex items-center gap-4">
+            <Link href="/login">
+              <Button variant="ghost" className="hidden md:inline-flex">
+                Log in
+              </Button>
+            </Link>
+            <Link href="/dashboard">
+              <Button>
+                Get Started <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1">Body</main>
+
+      <footer className="border-t bg-muted/50">
+        <div className="container flex flex-col md:flex-row items-center justify-between py-10 md:h-24 md:py-0">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <span className="font-semibold">PostAI</span>
+          </div>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+            <Link href="#" className="text-xs text-muted-foreground hover:text-foreground">
+              Terms of Service
+            </Link>
+            <Link href="#" className="text-xs text-muted-foreground hover:text-foreground">
+              Privacy Policy
+            </Link>
+            <p className="text-xs text-muted-foreground">© 2025 PostAI. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

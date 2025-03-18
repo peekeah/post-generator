@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +16,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-primary text-white h-screen`}>
-        <div className="m-auto flex-col gap-10 h-full">
-          <div className="text-white text-2xl p-5 text-center fixed top-0 bg-gray-500 w-screen z-10 h-[80px]">
-            <Link href="/">Social media post generator</Link>
-          </div>
-          <div className="pt-[80px]">{children}</div>
-        </div>
+      <body className={`${inter.className} h-screen`}>
+        <div>{children}</div>
       </body>
     </html>
   );
