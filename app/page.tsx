@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { HeroSection } from "@/components/hero-section";
 
 export default function Home() {
 
@@ -39,7 +40,9 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1">Body</main>
+      <main className="flex-1">
+        <HeroSection />
+      </main>
 
       <footer className="border-t bg-muted/50">
         <div className="container flex flex-col md:flex-row items-center justify-between py-10 md:h-24 md:py-0">
