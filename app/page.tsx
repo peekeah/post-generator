@@ -47,6 +47,7 @@ export default function Home() {
         <HeroSection />
         <FeatureSection />
         <PricingSection />
+        <TestimonialSection />
       </main>
 
       <footer className="border-t bg-muted/50">
