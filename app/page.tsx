@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { HeroSection } from "@/components/hero-section";
+import { FeatureSection } from "@/components/feature-section";
+import { PricingSection } from "@/components/pricing-section";
+import { TestimonialSection } from "@/components/testimonials-section";
 
 export default function Home() {
 
@@ -42,6 +45,7 @@ export default function Home() {
 
       <main className="flex-1">
         <HeroSection />
+        <FeatureSection />
       </main>
 
       <footer className="border-t bg-muted/50">
