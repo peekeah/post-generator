@@ -46,6 +46,7 @@ export default function Home() {
       <main className="flex-1">
         <HeroSection />
         <FeatureSection />
+        <PricingSection />
       </main>
 
       <footer className="border-t bg-muted/50">
