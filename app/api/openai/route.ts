@@ -1,4 +1,5 @@
 import { OpenAI } from "openai";
+import { PrismaClient } from "@prisma/client";
 
 async function generateSocialMediaPost(
   platform: "linkedin" | "facebook" | "twitter" | "instagram",
@@ -52,16 +53,30 @@ export async function POST(
       tone,
     } = request;
 
-    console.log("input:", {
-      platform,
-      message,
-      wordLimit,
-      tone,
-    })
+    if (
+      !platform ||
+      !message ||
+      !wordLimit ||
+      !tone
+    ) {
+      throw new Error("validation error")
+    }
+
+    const prisma = new PrismaClient();
 
     // LLM Call
     const llmResponse = await generateSocialMediaPost(platform, message, wordLimit, tone);
-    console.log("llmResponse:", llmResponse)
+
+    // DB Call
+    await prisma.socialMediaPost.create({
+      data: {
+        platform: platform.toUpperCase(),
+        wordLimit,
+        message,
+        tone: tone.toUpperCase(),
+        generatedContent: llmResponse
+      }
+    })
 
     return new Response(
       JSON.stringify({
