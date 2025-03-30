@@ -64,8 +64,6 @@ export default function DashboardLayout({ children,
     );
   }, [pathname])
 
-  console.log("activeSection", activeSection)
-
   return (
     <main className="flex w-full">
       <AppSidebar

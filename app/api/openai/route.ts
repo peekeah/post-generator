@@ -1,56 +1,77 @@
-import sheet from "../sheet/utils"
+import { OpenAI } from "openai";
 
+async function generateSocialMediaPost(
+  platform: "linkedin" | "facebook" | "twitter" | "instagram",
+  message: string,
+  wordLimit: number,
+  tone: "professional" | "casual" | "humorous" | "inspirational" | "educational"
+): Promise<string> {
+
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+  const systemPrompt = `
+    You are an expert social media content creator with deep knowledge of effective engagement strategies for different platforms.
+    - LinkedIn: Professional, insightful, industry-relevant.
+    - Facebook: Conversational, engaging, friendly.
+    - Twitter: Concise, impactful, trending topics.
+    - Instagram: Visual-oriented, catchy, modern.
+    
+    Your task is to generate high-quality posts tailored to the given platform, ensuring engagement and clarity.
+  `;
+
+  const userPrompt = `
+    Generate a **${tone}** social media post for **${platform}** within a **${wordLimit}**-word limit.
+    
+    **Message:** "${message}"
+    
+    Ensure the content aligns with best practices for the platform while making it engaging and readable.
+  `;
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userPrompt }
+    ],
+    max_tokens: Math.min(wordLimit * 2, 200), // Adjust for word-to-token ratio
+    temperature: 0.7,
+  });
+
+  return response?.choices?.[0]?.message?.content?.trim() || "Failed to generate post.";
+}
 export async function POST(
   req: Request
 ) {
   try {
-    const OPENAI_KEY = process.env.OPENAI_KEY;
-
-    const uri = "https://api.openai.com/v1/chat/completions";
 
     const request = await req.json()
-    const { content } = request;
+    const {
+      platform,
+      message,
+      wordLimit,
+      tone,
+    } = request;
 
-    const payload = {
-      "model": "gpt-3.5-turbo",
-      "messages": [
-          {
-              "role": "user",
-              "content": `Please provide me social media post for the following content\n${content}`
-          }
-      ]
-    }
+    console.log("input:", {
+      platform,
+      message,
+      wordLimit,
+      tone,
+    })
 
-    const config = {
-      method: "POST",
-      "Content-Type": "application/json",
-      headers: {
-        "Authorization": `Bearer ${OPENAI_KEY}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    }
-
-    const response = await fetch(uri, config)
-    const data = await response.json();
-    const result = data?.choices?.[0].message?.content;
-
-    // Store data into sheet
-    const sheetValues =[
-      [content, result, new Date()]
-    ]
-
-    await sheet.writeSheet(sheetValues)
+    // LLM Call
+    const llmResponse = await generateSocialMediaPost(platform, message, wordLimit, tone);
+    console.log("llmResponse:", llmResponse)
 
     return new Response(
       JSON.stringify({
         status: true,
-        data: result
+        data: llmResponse,
       })
     )
-  
+
   } catch (err) {
+    console.log("ee:", err)
     return new Response(
       JSON.stringify({
         status: false,

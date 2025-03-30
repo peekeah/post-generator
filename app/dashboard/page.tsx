@@ -1,6 +1,7 @@
 "use client"
 
 import { Sparkles } from "lucide-react"
+import axios from "axios";
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,16 +13,23 @@ import { useState } from "react"
 
 export default function DashboardPage() {
   const [platform, setPlatform] = useState("linkedin")
-  const [wordLimit, setWordLimit] = useState([150])
+  const [message, setMessage] = useState("");
+  const [wordLimit, setWordLimit] = useState([15])
   const [tone, setTone] = useState("professional")
   const [isGenerating, setIsGenerating] = useState(false)
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setIsGenerating(true)
-    // Simulate API call
-    setTimeout(() => {
-      setIsGenerating(false)
-    }, 2000)
+
+    const res = await axios.post("/api/openai", {
+      platform,
+      message,
+      wordLimit: wordLimit?.[0],
+      tone,
+    });
+
+    console.log("res:", res)
+    setIsGenerating(false)
   }
 
   return (
@@ -54,6 +62,8 @@ export default function DashboardPage() {
               id="topic"
               placeholder="Enter the topic or message you want to create a post about..."
               className="min-h-[120px] resize-none"
+              value={message}
+              onChange={e => setMessage(e.target.value)}
             />
           </div>
 
@@ -80,9 +90,9 @@ export default function DashboardPage() {
               <span className="text-sm text-muted-foreground">{wordLimit[0]} words</span>
             </div>
             <Slider
-              defaultValue={[150]}
-              max={300}
-              step={10}
+              defaultValue={[15]}
+              max={60}
+              step={5}
               value={wordLimit}
               onValueChange={setWordLimit}
               className="py-4"
