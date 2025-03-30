@@ -24,6 +24,34 @@ export async function GET() {
   }
 }
 
+export async function DELETE(req: Request) {
+  try {
+    const { id } = await req.json()
+    if (!id) throw new Error("validaton error");
+
+    await prisma.socialMediaPost.delete({
+      where: { id }
+    })
+
+    return new Response(
+      JSON.stringify({
+        status: false,
+        data: "Successfully deleted entry",
+      })
+    )
+
+  } catch (err) {
+    console.log("ee:", err)
+    return new Response(
+      JSON.stringify({
+        status: false,
+        data: "Internal server error",
+        err: err
+      })
+    )
+  }
+}
+
 export async function POST(
   req: Request
 ) {

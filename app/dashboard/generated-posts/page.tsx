@@ -25,11 +25,15 @@ const GeneratedPosts = () => {
   const [viewMode, setViewMode] = useState("grid")
   const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
+  const fetchPosts = () => {
     axios.get("/api/posts")
       .then(res => {
         setPosts(res?.data?.data)
       })
+  }
+
+  useEffect(() => {
+    fetchPosts();
   }, [])
 
   const handleCopy = (content: string) => {
@@ -37,7 +41,9 @@ const GeneratedPosts = () => {
   }
 
   const handleDelete = (id: string) => {
-    setPosts(posts.filter((post) => post.id !== id))
+    axios.delete("/api/posts/", {
+      data: { id }
+    }).then(fetchPosts)
   }
 
   return (
