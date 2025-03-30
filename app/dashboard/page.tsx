@@ -21,14 +21,13 @@ export default function DashboardPage() {
   const handleGenerate = async () => {
     setIsGenerating(true)
 
-    const res = await axios.post("/api/openai", {
+    const res = await axios.post("/api/posts", {
       platform,
       message,
       wordLimit: wordLimit?.[0],
       tone,
     });
 
-    console.log("res:", res)
     setIsGenerating(false)
   }
 
