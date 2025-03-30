@@ -166,7 +166,7 @@ export default function GeneratorPage() {
                   step={10}
                   value={wordLimit}
                   onValueChange={setWordLimit}
-                  className="[&>[role=slider]]:bg-[#205781] [&>[role=slider]]:border-[#205781] [&>span]:bg-[#205781] dark:[&>[role=slider]]:bg-[#4F959D] dark:[&>[role=slider]]:border-[#4F959D] dark:[&>span]:bg-[#4F959D]"
+                // className="[&>[role=slider]]:bg-[#205781] [&>[role=slider]]:border-[#205781] [&>span]:bg-[#205781] dark:[&>[role=slider]]:bg-[#4F959D] dark:[&>[role=slider]]:border-[#4F959D] dark:[&>span]:bg-[#4F959D]"
                 />
               </div>
             </CardContent>
