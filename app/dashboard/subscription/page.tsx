@@ -1,197 +1,152 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Check, CreditCard, Sparkles } from "lucide-react"
-import { motion } from "framer-motion"
+import { Check } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
 
-export default function SubscriptionPage() {
-  const [mounted, setMounted] = useState(false)
-  const [annual, setAnnual] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
+export default function Subscriptions() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Subscription</h2>
-        <p className="text-muted-foreground">Manage your subscription plan and billing information.</p>
+    <div className="max-w-5xl mx-auto">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl font-bold">Choose Your Plan</h2>
+        <p className="text-muted-foreground mt-2">Select the perfect plan for your social media needs</p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        <motion.div
-          className="lg:col-span-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>Choose Your Plan</CardTitle>
-              <CardDescription>Select the plan that best fits your needs.</CardDescription>
-              <div className="mt-4 flex items-center space-x-4">
-                <span className={`text-sm ${!annual ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-                  Monthly
-                </span>
-                <div className="flex items-center space-x-2">
-                  <Switch id="billing-toggle" checked={annual} onCheckedChange={setAnnual} />
-                  <Label htmlFor="billing-toggle" className="sr-only">
-                    Toggle billing period
-                  </Label>
-                </div>
-                <span className={`text-sm ${annual ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-                  Annual{" "}
-                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                    Save 20%
-                  </span>
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card className="border-2 border-muted">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Free</CardTitle>
-                    <CardDescription>Perfect for getting started with AI-powered posts.</CardDescription>
-                    <div className="mt-4 flex items-baseline text-foreground">
-                      <span className="text-3xl font-bold">$0</span>
-                      <span className="ml-1 text-muted-foreground">/month</span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3 text-sm">
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>10 AI-generated posts per month</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Basic platform support</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Standard tone options</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Post history (7 days)</span>
-                      </li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button variant="outline" className="w-full">
-                      Current Plan
-                    </Button>
-                  </CardFooter>
-                </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Free Plan */}
+        <Card className="border-muted transition-all duration-300 hover:shadow-md">
+          <CardHeader>
+            <CardTitle>Free</CardTitle>
+            <CardDescription>For personal use</CardDescription>
+            <div className="mt-4">
+              <span className="text-3xl font-bold">$0</span>
+              <span className="text-muted-foreground">/month</span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>30 posts per month</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Basic tones</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Standard response time</span>
+              </li>
+            </ul>
+          </CardContent>
+          <CardFooter>
+            <Button variant="outline" className="w-full">
+              Current Plan
+            </Button>
+          </CardFooter>
+        </Card>
 
-                <Card className="border-2 border-primary">
-                  <CardHeader>
-                    <div className="mb-2 flex items-center justify-between">
-                      <CardTitle className="text-xl">Premium</CardTitle>
-                      <Badge className="bg-primary text-primary-foreground">Recommended</Badge>
-                    </div>
-                    <CardDescription>For professionals and growing businesses.</CardDescription>
-                    <div className="mt-4 flex items-baseline text-foreground">
-                      <span className="text-3xl font-bold">${annual ? "19" : "24"}</span>
-                      <span className="ml-1 text-muted-foreground">
-                        /{annual ? "month (billed annually)" : "month"}
-                      </span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3 text-sm">
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Unlimited AI-generated posts</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>All platform integrations</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Advanced tone customization</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Post scheduling</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Analytics dashboard</span>
-                      </li>
-                      <li className="flex items-center">
-                        <Check className="mr-2 h-4 w-4 text-primary" />
-                        <span>Priority support</span>
-                      </li>
-                    </ul>
-                  </CardContent>
-                  <CardFooter>
-                    <Button className="w-full">
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      Upgrade to Premium
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {/* Pro Plan */}
+        <Card className="border-primary shadow-lg relative transition-all duration-300 hover:shadow-xl">
+          <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 text-xs font-medium rounded-bl-lg rounded-tr-lg">
+            Popular
+          </div>
+          <CardHeader>
+            <CardTitle>Pro</CardTitle>
+            <CardDescription>For professionals</CardDescription>
+            <div className="mt-4">
+              <span className="text-3xl font-bold">$19</span>
+              <span className="text-muted-foreground">/month</span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>100 posts per month</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>All tones available</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Faster response time</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Post scheduling</span>
+              </li>
+            </ul>
+          </CardContent>
+          <CardFooter>
+            <Button className="w-full">Upgrade to Pro</Button>
+          </CardFooter>
+        </Card>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>Billing Information</CardTitle>
-              <CardDescription>Manage your payment methods and billing details.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Current Plan</h3>
-                <div className="rounded-md border p-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Free Plan</p>
-                      <p className="text-xs text-muted-foreground">10 posts per month</p>
-                    </div>
-                    <Badge variant="outline">Active</Badge>
-                  </div>
-                </div>
-              </div>
+        {/* Business Plan */}
+        <Card className="border-muted transition-all duration-300 hover:shadow-md">
+          <CardHeader>
+            <CardTitle>Business</CardTitle>
+            <CardDescription>For teams</CardDescription>
+            <div className="mt-4">
+              <span className="text-3xl font-bold">$49</span>
+              <span className="text-muted-foreground">/month</span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Unlimited posts</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>All tones + custom tones</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Priority response time</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Post scheduling</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-5 w-5 text-primary mr-2" />
+                <span>Team collaboration</span>
+              </li>
+            </ul>
+          </CardContent>
+          <CardFooter>
+            <Button variant="outline" className="w-full">
+              Upgrade to Business
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
 
-              <Separator />
-
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Payment Method</h3>
-                <Button variant="outline" className="w-full justify-start">
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Add Payment Method
-                </Button>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Billing History</h3>
-                <p className="text-xs text-muted-foreground">No billing history available on the Free plan.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+      <div className="mt-12 bg-muted/50 p-6 rounded-lg">
+        <h3 className="text-lg font-medium">Current Usage</h3>
+        <div className="mt-4">
+          <div className="flex justify-between mb-2">
+            <span className="text-sm font-medium">Posts Generated</span>
+            <span className="text-sm font-medium">10/30</span>
+          </div>
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="bg-primary h-full w-1/3 rounded-full"></div>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-between items-center">
+          <div>
+            <p className="text-sm font-medium">Billing Cycle</p>
+            <p className="text-sm text-muted-foreground">Renews on April 23, 2025</p>
+          </div>
+          <Button variant="outline" size="sm">
+            Manage Billing
+          </Button>
+        </div>
       </div>
     </div>
   )

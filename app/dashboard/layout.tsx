@@ -74,7 +74,7 @@ export default function DashboardLayout({ children,
       />
       <div className="flex-1">
         <AppHeader activeSection={activeSection} />
-        <div className="p-5">{children}</div>
+        <div className="p-6 bg-muted/30">{children}</div>
       </div>
     </main>
   )
