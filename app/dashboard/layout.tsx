@@ -6,12 +6,14 @@ import { FileText, Home, Settings, CreditCard, LucideProps, Bell, ChevronDown, M
 
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { ForwardRefExoticComponent, RefAttributes, useEffect, useState } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
+import { signOut, useSession } from "next-auth/react"
+import { Spinner } from "@/components/ui/spinner"
 
 interface NavItem {
   id: string;
@@ -54,15 +56,28 @@ export default function DashboardLayout({ children,
 }) {
 
   const pathname = usePathname()
+  const session = useSession();
+  const router = useRouter();
   const [activeSection, setActiveSection] = useState<ActiveSection>(navItems[0].id);
 
   useEffect(() => {
+    if (session.status === "unauthenticated") {
+      router.push("/")
+    }
     setActiveSection(
       () =>
         pathname.split("/dashboard")?.[1].replace("/", "") ||
         "post-generator"
     );
-  }, [pathname])
+  }, [session, pathname])
+
+  if (session.status === "loading") {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    )
+  }
 
   return (
     <main className="flex w-full">
@@ -161,7 +176,9 @@ const AppHeader = ({ activeSection }: { activeSection: ActiveSection }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => signOut()}
+            >Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

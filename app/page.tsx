@@ -7,6 +7,8 @@ import { FeatureSection } from "@/components/feature-section";
 import { PricingSection } from "@/components/pricing-section";
 import { TestimonialSection } from "@/components/testimonials-section";
 
+import { SessionProvider, useSession } from "next-auth/react"
+
 export default function Home() {
 
   return (

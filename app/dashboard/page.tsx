@@ -10,13 +10,17 @@ import { Slider } from "@/components/ui/slider"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
+
   const [platform, setPlatform] = useState("linkedin")
-  const [message, setMessage] = useState("");
   const [wordLimit, setWordLimit] = useState([15])
+  const [message, setMessage] = useState("");
   const [tone, setTone] = useState("professional")
   const [isGenerating, setIsGenerating] = useState(false)
+
+  const router = useRouter();
 
   const handleGenerate = async () => {
     setIsGenerating(true)

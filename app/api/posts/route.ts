@@ -1,10 +1,10 @@
 import { OpenAI } from "openai";
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/utils";
 
 export async function GET() {
   try {
+
     const dbRes = await prisma.socialMediaPost.findMany();
     return new Response(
       JSON.stringify({

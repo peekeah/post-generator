@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { signIn } from "next-auth/react"
 
 export default function LoginPage() {
   const [mounted, setMounted] = useState(false)
@@ -23,6 +24,8 @@ export default function LoginPage() {
   }, [])
 
   const handleLogin = (e: React.FormEvent) => {
+    signIn("google")
+    /*
     e.preventDefault()
     setIsLoading(true)
     // Simulate login process
@@ -30,6 +33,7 @@ export default function LoginPage() {
       setIsLoading(false)
       window.location.href = "/dashboard"
     }, 1500)
+    */
   }
 
   if (!mounted) return null
@@ -64,7 +68,11 @@ export default function LoginPage() {
           <CardContent className="space-y-4">
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <Button variant="outline" className="bg-white hover:bg-gray-50">
+                <Button
+                  variant="outline"
+                  className="bg-white hover:bg-gray-50"
+                  onClick={() => signIn("google")}
+                >
                   <FcGoogle className="mr-2 h-4 w-4" />
                   Google
                 </Button>
