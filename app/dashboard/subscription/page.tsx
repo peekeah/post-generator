@@ -1,11 +1,19 @@
 "use client"
 
 import { Check } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect } from "react"
+import axios from "axios"
 
 export default function Subscriptions() {
+
+  useEffect(() => {
+    axios.get("/api/subscription/3")
+      .then(res => console.log("rr:", res))
+
+  }, [])
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="text-center mb-10">

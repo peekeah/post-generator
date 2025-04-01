@@ -3,14 +3,12 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/utils";
-import { JWT } from "next-auth/jwt";
-import { Session } from "next-auth";
 
 // Extend the default session type to include user ID
 declare module "next-auth" {
   interface Session {
     user: {
-      id?: string;
+      id: string;
       name?: string | null;
       email?: string | null;
       image?: string | null;
@@ -31,17 +29,17 @@ export const authOptions: AuthOptions = {
     })
   ],
   callbacks: {
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub;
-      }
-      return session;
-    },
     async jwt({ token, user }) {
       if (user) {
-        token.sub = user.id;
+        token.id = user.id;
       }
       return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
