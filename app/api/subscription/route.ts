@@ -26,35 +26,37 @@ export async function GET(request: NextRequest) {
 }
 
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const {
-      id,
       planId,
-      // other vars
     }: {
       id: string, planId: string
     } = await request.json();
 
-    if (!id) throw new Error("validation error")
+    if (!planId) return ReturnError("PlanId is required", 403)
+
+    const token = await getToken({ req: request });
+    if (!token?.sub) return ReturnError("Unauthorized", 401)
 
     // Purchase logic here
     const purchase = await prisma.subscription.findUnique({
       where: {
-        id, status: "ACTIVE"
+        userId: token?.sub,
+        status: "ACTIVE"
       }
     })
 
     if (!purchase) {
-      prisma.subscription.create({
+      await prisma.subscription.create({
         data: {
-          userId: id,
+          userId: token?.sub,
           planId,
           status: "ACTIVE"
         }
       })
     } else {
-      prisma.$transaction([
+      await prisma.$transaction([
         prisma.subscription.update({
           where: {
             id: purchase.id,
@@ -65,7 +67,7 @@ export async function POST(request: Request) {
         }),
         prisma.subscription.create({
           data: {
-            userId: id,
+            userId: token.sub,
             planId,
             status: "ACTIVE"
           }
@@ -76,7 +78,6 @@ export async function POST(request: Request) {
         status: true,
         data: "Successfully subscribed to the plan"
       })
-
     }
 
   } catch (err) {
