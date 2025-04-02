@@ -18,7 +18,6 @@ const ChildrenComponent = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("ss:", session)
     if (session.status === "authenticated") {
       router.push("/dashboard")
     }

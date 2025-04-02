@@ -9,7 +9,7 @@ import axios from "axios"
 export default function Subscriptions() {
 
   useEffect(() => {
-    axios.get("/api/subscription/3")
+    axios.get("/api/subscription")
       .then(res => console.log("rr:", res))
 
   }, [])

@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // For other routes, redirect to login
-    return NextResponse.redirect(new URL('/login', request.url));
+    // return NextResponse.redirect(new URL('/login', request.url));
   }
 
   // User is authenticated, allow the request to proceed
