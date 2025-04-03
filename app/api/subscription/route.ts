@@ -3,21 +3,59 @@ import { prisma } from "@/lib/utils"
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
+const calculateUsage = async (userId: string) => {
+  const userPosts = await prisma.socialMediaPost.findMany({
+    where: {
+      userId,
+      createdAt: {
+        gte: new Date(new Date().setDate(1)), // First day of current month
+        lt: new Date(new Date().setMonth(new Date().getMonth() + 1, 1))
+      }
+    }
+  })
+
+  const montlyPostCount = userPosts.length;
+
+  const activeSubscription = await prisma.subscription.findFirstOrThrow({
+    where: {
+      userId,
+      status: "ACTIVE"
+    }
+  })
+
+  const currentPlan = await prisma.plan.findUniqueOrThrow({
+    where: {
+      id: activeSubscription.planId
+    }
+  });
+
+  return {
+    totalUsage: montlyPostCount,
+    postLimit: currentPlan.postLimit,
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
 
     const token = await getToken({ req: request });
 
-    const subscription = await prisma.subscription.findUnique({
+    if (!token?.sub) {
+      throw new Error()
+    }
+
+    const subscription = await prisma.subscription.findFirstOrThrow({
       where: {
         userId: token?.sub,
         status: "ACTIVE"
       }
     })
 
+    const usage = calculateUsage(token?.sub)
+
     return NextResponse.json({
       status: true,
-      data: subscription
+      data: { subscription, usage }
     })
   } catch (err: unknown) {
     console.log("error:", err)
@@ -40,7 +78,7 @@ export async function POST(request: NextRequest) {
     if (!token?.sub) return ReturnError("Unauthorized", 401)
 
     // Purchase logic here
-    const purchase = await prisma.subscription.findUnique({
+    const purchase = await prisma.subscription.findFirstOrThrow({
       where: {
         userId: token?.sub,
         status: "ACTIVE"
