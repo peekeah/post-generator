@@ -42,6 +42,44 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
+  events: {
+    async signIn({ user }) {
+      try {
+        // Check if the user already has a subscription
+        const existingSubscription = await prisma.subscription.findFirst({
+          where: { userId: user.id },
+        });
+
+        if (existingSubscription) {
+          return;
+        }
+
+        // Get the free plan from the Plan table
+        const freePlan = await prisma.plan.findFirst({
+          where: { name: "Free" },
+        });
+
+        if (!freePlan) {
+          console.error("No free plan found in the database.");
+          return;
+        }
+
+        // Create a subscription for the new user
+        await prisma.subscription.create({
+          data: {
+            userId: user.id,
+            planId: freePlan.id,
+            status: "ACTIVE",
+            startDate: new Date(),
+          },
+        });
+
+        console.log(`Subscription created for user ${user.id}`);
+      } catch (err) {
+        console.error("Error creating subscription:", err);
+      }
+    }
+  },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",

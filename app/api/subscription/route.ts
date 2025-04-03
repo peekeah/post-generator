@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       throw new Error()
     }
 
-    const subscription = await prisma.subscription.findFirstOrThrow({
+    const subscription = await prisma.subscription.findFirst({
       where: {
         userId: token?.sub,
         status: "ACTIVE"
