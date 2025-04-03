@@ -1,6 +1,7 @@
 import { OpenAI } from "openai";
-import { PrismaClient } from "@prisma/client";
 import { prisma } from "@/lib/utils";
+import { getToken } from "next-auth/jwt";
+import { NextRequest } from "next/server";
 
 export async function GET() {
   try {
@@ -53,19 +54,20 @@ export async function DELETE(req: Request) {
 }
 
 export async function POST(
-  req: Request
+  req: NextRequest
 ) {
   try {
 
-    const request = await req.json()
+    const token = await getToken({ req })
     const {
       platform,
       message,
       wordLimit,
       tone,
-    } = request;
+    } = await req.json()
 
     if (
+      !token?.sub ||
       !platform ||
       !message ||
       !wordLimit ||
@@ -84,7 +86,8 @@ export async function POST(
         wordLimit,
         message,
         tone: tone.toUpperCase(),
-        generatedContent: llmResponse
+        generatedContent: llmResponse,
+        userId: token?.sub
       }
     })
 
