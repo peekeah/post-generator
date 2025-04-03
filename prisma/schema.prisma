@@ -49,14 +49,15 @@ model VerificationToken {
 
 // Your existing models with NextAuth compatibility
 model User {
-  id            String        @id @default(uuid())
-  email         String        @unique
+  id            String            @id @default(uuid())
+  email         String            @unique
   name          String?
   emailVerified DateTime?
   image         String?
-  subscription  Subscription? @relation("UserSubscription")
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  posts         SocialMediaPost[] @relation("UserPosts")
+  subscription  Subscription[]    @relation("UserSubscription")
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
   accounts      Account[]
   sessions      Session[]
 }
@@ -79,7 +80,7 @@ model Plan {
   name          String         @unique // Plan name (Free, Pro, Business)
   price         Float          @default(0.0) // Monthly price
   duration      Int            @default(30) // Duration in days
-  features      String[] // List of features in the plan
+  postLimit     Int            @default(5)
   subscriptions Subscription[] // One-to-many relation with Subscription
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -98,6 +99,8 @@ model SocialMediaPost {
   wordLimit        Int
   tone             Tone
   generatedContent String   @db.Text() // The AI-generated post
+  user             User     @relation("UserPosts", fields: [userId], references: [id])
+  userId           String   @unique
   createdAt        DateTime @default(now()) // Timestamp for tracking
 }
 

@@ -9,11 +9,13 @@ const seedPlans = async () => {
           name: "Free",
           price: 0,
           duration: 30,
+          postLimit: 5
         },
         {
           name: "Premium",
           price: 150,
           duration: 30,
+          postLimit: 30
         }
       ]
     })
