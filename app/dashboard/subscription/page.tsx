@@ -15,20 +15,20 @@ export default function Subscriptions() {
   }, [])
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <div className="text-center mb-10">
         <h2 className="text-3xl font-bold">Choose Your Plan</h2>
         <p className="text-muted-foreground mt-2">Select the perfect plan for your social media needs</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Free Plan */}
         <Card className="border-muted transition-all duration-300 hover:shadow-md">
           <CardHeader>
             <CardTitle>Free</CardTitle>
             <CardDescription>For personal use</CardDescription>
             <div className="mt-4">
-              <span className="text-3xl font-bold">$0</span>
+              <span className="text-3xl font-bold">₹0</span>
               <span className="text-muted-foreground">/month</span>
             </div>
           </CardHeader>
@@ -36,7 +36,7 @@ export default function Subscriptions() {
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Check className="h-5 w-5 text-primary mr-2" />
-                <span>30 posts per month</span>
+                <span>5 posts per month</span>
               </li>
               <li className="flex items-center">
                 <Check className="h-5 w-5 text-primary mr-2" />
@@ -64,7 +64,7 @@ export default function Subscriptions() {
             <CardTitle>Pro</CardTitle>
             <CardDescription>For professionals</CardDescription>
             <div className="mt-4">
-              <span className="text-3xl font-bold">$19</span>
+              <span className="text-3xl font-bold">₹150</span>
               <span className="text-muted-foreground">/month</span>
             </div>
           </CardHeader>
@@ -72,7 +72,7 @@ export default function Subscriptions() {
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Check className="h-5 w-5 text-primary mr-2" />
-                <span>100 posts per month</span>
+                <span>30 posts per month</span>
               </li>
               <li className="flex items-center">
                 <Check className="h-5 w-5 text-primary mr-2" />
@@ -82,10 +82,6 @@ export default function Subscriptions() {
                 <Check className="h-5 w-5 text-primary mr-2" />
                 <span>Faster response time</span>
               </li>
-              <li className="flex items-center">
-                <Check className="h-5 w-5 text-primary mr-2" />
-                <span>Post scheduling</span>
-              </li>
             </ul>
           </CardContent>
           <CardFooter>
@@ -93,46 +89,6 @@ export default function Subscriptions() {
           </CardFooter>
         </Card>
 
-        {/* Business Plan */}
-        <Card className="border-muted transition-all duration-300 hover:shadow-md">
-          <CardHeader>
-            <CardTitle>Business</CardTitle>
-            <CardDescription>For teams</CardDescription>
-            <div className="mt-4">
-              <span className="text-3xl font-bold">$49</span>
-              <span className="text-muted-foreground">/month</span>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
-              <li className="flex items-center">
-                <Check className="h-5 w-5 text-primary mr-2" />
-                <span>Unlimited posts</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-5 w-5 text-primary mr-2" />
-                <span>All tones + custom tones</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-5 w-5 text-primary mr-2" />
-                <span>Priority response time</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-5 w-5 text-primary mr-2" />
-                <span>Post scheduling</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-5 w-5 text-primary mr-2" />
-                <span>Team collaboration</span>
-              </li>
-            </ul>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline" className="w-full">
-              Upgrade to Business
-            </Button>
-          </CardFooter>
-        </Card>
       </div>
 
       <div className="mt-12 bg-muted/50 p-6 rounded-lg">
