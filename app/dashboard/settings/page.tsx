@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import axios from "axios"
 
 export default function SettingsPage() {
   const [mounted, setMounted] = useState(false)
@@ -22,6 +23,15 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setMounted(true)
+    axios.get("/api/profile")
+      .then(({ data }) => {
+        setFormData(() => ({
+          name: data?.data?.name || "",
+          email: data?.data?.email || "",
+          company: data?.data?.company || "",
+          bio: data?.data?.bio || ""
+        }))
+      })
   }, [])
 
   const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -34,12 +44,17 @@ export default function SettingsPage() {
 
   }
 
-  const onSubmit = () => {
-    console.log("formData:", formData)
+  const onSubmit = async () => {
+    try {
+      const res = await axios.post("/api/profile", formData)
+
+    } catch (err) {
+      console.log(err, "Error while updating data")
+      alert(JSON.stringify(err))
+    }
   }
 
   if (!mounted) return null
-
 
   return (
     <div className="space-y-8 max-w-4xl m-auto">
@@ -78,6 +93,7 @@ export default function SettingsPage() {
                 <Label htmlFor="name">Full Name</Label>
                 <Input
                   id="name"
+                  name="name"
                   defaultValue="John Doe"
                   value={formData.name}
                   onChange={onInputChange}
@@ -87,6 +103,7 @@ export default function SettingsPage() {
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   defaultValue="john@example.com"
                   value={formData.email}
@@ -97,6 +114,7 @@ export default function SettingsPage() {
                 <Label htmlFor="company">Company</Label>
                 <Input
                   id="company"
+                  name="company"
                   defaultValue="Acme Inc"
                   value={formData.company}
                   onChange={onInputChange}
@@ -108,6 +126,7 @@ export default function SettingsPage() {
               <Label htmlFor="bio">Bio</Label>
               <Input
                 id="bio"
+                name="bio"
                 defaultValue="Digital marketing specialist with a passion for AI-driven content."
                 value={formData.bio}
                 onChange={onInputChange}

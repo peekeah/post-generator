@@ -52,6 +52,8 @@ model User {
   updatedAt     DateTime          @updatedAt
   emailVerified DateTime?
   image         String?
+  company       String?
+  bio           String?
   accounts      Account[]
   sessions      Session[]
   posts         SocialMediaPost[]
