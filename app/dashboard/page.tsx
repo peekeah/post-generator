@@ -53,7 +53,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto space-y-6">
+      <h2 className="text-3xl font-bold tracking-tight text-center">Generate Post</h2>
       <Card className="shadow-lg border-muted bg-card/50 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Create AI-Generated Social Media Post</CardTitle>

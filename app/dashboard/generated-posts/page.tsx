@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Copy, Edit, MoreHorizontal, Trash2, Grid, List, Facebook } from "lucide-react"
+import { Copy, Edit, MoreHorizontal, Trash2, Grid, List } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
@@ -48,8 +48,9 @@ const GeneratedPosts = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Your Generated Posts</h2>
+      <div className="flex justify-between items-center w-full">
+
+        <h2 className="text-3xl font-bold tracking-tight">Generated Posts</h2>
         <div className="flex items-center gap-2">
           <Tabs defaultValue="grid" value={viewMode} onValueChange={setViewMode}>
             <TabsList>

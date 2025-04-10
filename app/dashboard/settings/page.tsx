@@ -26,6 +26,10 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setMounted(true)
+    fetchData()
+  }, [])
+
+  const fetchData = () => {
     axios.get("/api/profile")
       .then(({ data }) => {
         setFormData(() => ({
@@ -36,7 +40,7 @@ export default function SettingsPage() {
           image: data?.data?.image || ""
         }))
       })
-  }, [])
+  }
 
   const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
@@ -62,6 +66,7 @@ export default function SettingsPage() {
         toast({
           description: res?.data?.data
         })
+        fetchData();
       }
     } catch (err) {
       console.log("error:", err)
@@ -74,8 +79,8 @@ export default function SettingsPage() {
 
   const onSubmit = async () => {
     try {
-      const res = await axios.post("/api/profile", formData)
-
+      await axios.post("/api/profile", formData)
+      fetchData();
     } catch (err) {
       console.log(err, "Error while updating data")
       alert(JSON.stringify(err))

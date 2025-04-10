@@ -80,14 +80,14 @@ export default function DashboardLayout({ children,
   }
 
   return (
-    <main className="flex w-full">
+    <main className="flex w-full h-full">
       <AppSidebar
         activeSection={activeSection}
         navItems={navItems}
       />
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col justify-center">
         <AppHeader activeSection={activeSection} />
-        <div className="p-6 bg-muted/30">{children}</div>
+        <div className="p-6 bg-muted/30 flex-1">{children}</div>
       </div>
     </main>
   )
