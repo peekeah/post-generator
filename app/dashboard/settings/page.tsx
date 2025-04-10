@@ -4,12 +4,13 @@ import { useState, useEffect, ChangeEventHandler } from "react"
 import { motion } from "framer-motion"
 import { Save } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import axios from "axios"
+import clsx from "clsx"
 
 export default function SettingsPage() {
   const [mounted, setMounted] = useState(false)
@@ -18,7 +19,8 @@ export default function SettingsPage() {
     name: "",
     email: "",
     company: "",
-    bio: ""
+    bio: "",
+    image: ""
   })
 
   useEffect(() => {
@@ -29,7 +31,8 @@ export default function SettingsPage() {
           name: data?.data?.name || "",
           email: data?.data?.email || "",
           company: data?.data?.company || "",
-          bio: data?.data?.bio || ""
+          bio: data?.data?.bio || "",
+          image: data?.data?.image || ""
         }))
       })
   }, [])
@@ -41,7 +44,22 @@ export default function SettingsPage() {
       ...prev,
       [name]: value
     }))
+  }
 
+  const onFileUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    try {
+      const payload = new FormData();
+      const file = e.target.files?.[0]
+      if (!file) return;
+      payload.append("avatar", file)
+      const res = await axios.post("/api/profile/avatar", payload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      })
+    } catch (err) {
+      console.log("error:", err)
+    }
   }
 
   const onSubmit = async () => {
@@ -71,16 +89,36 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex flex-col items-center space-y-4 sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src="/placeholder.svg?height=96&width=96" alt="User" />
+              <Avatar
+                className="h-20 w-20"
+              >
+                <AvatarImage src={formData.image} />
                 <AvatarFallback className="text-2xl">JD</AvatarFallback>
               </Avatar>
               <div className="space-y-1 text-center sm:text-left">
                 <h3 className="text-lg font-medium">Profile Picture</h3>
                 <div className="flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm">
-                    Upload
-                  </Button>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <label
+                      htmlFor="avatar"
+                      className={
+                        clsx("cursor-pointer",
+                          buttonVariants({ variant: "default", size: "sm" }),
+                        )
+                      }
+                    >
+                      Upload
+                    </label>
+                    <input
+                      type="file"
+                      id="avatar"
+                      name="filename"
+                      className="hidden"
+                      onChange={onFileUpload}
+                    >
+                    </input>
+                    <input className="hidden" type="submit" />
+                  </form>
                   <Button variant="outline" size="sm">
                     Remove
                   </Button>
