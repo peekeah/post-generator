@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import axios from "axios"
 import clsx from "clsx"
+import { toast } from "@/hooks/use-toast"
 
 export default function SettingsPage() {
   const [mounted, setMounted] = useState(false)
@@ -57,8 +58,17 @@ export default function SettingsPage() {
           'Content-Type': 'multipart/form-data',
         }
       })
+      if (res?.data?.status) {
+        toast({
+          description: res?.data?.data
+        })
+      }
     } catch (err) {
       console.log("error:", err)
+      toast({
+        variant: "destructive",
+        description: "Error while uploading image"
+      })
     }
   }
 

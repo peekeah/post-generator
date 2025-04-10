@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 export default function DashboardPage() {
 
@@ -24,15 +25,31 @@ export default function DashboardPage() {
 
   const handleGenerate = async () => {
     setIsGenerating(true)
+    try {
+      const res = await axios.post("/api/posts", {
+        platform,
+        message,
+        wordLimit: wordLimit?.[0],
+        tone,
+      });
 
-    const res = await axios.post("/api/posts", {
-      platform,
-      message,
-      wordLimit: wordLimit?.[0],
-      tone,
-    });
+      if (res?.data?.status) {
+        toast({
+          description: "Successfully generated caption"
+        })
+        router.push("/dashboard/generated-posts")
+      } else {
+        throw new Error()
+      }
 
-    setIsGenerating(false)
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        description: "Error while generating caption"
+      })
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   return (
