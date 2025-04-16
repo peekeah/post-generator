@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
-      <ChildrenComponent children={children} />
+      <ChildrenComponent component={children} />
     </SessionProvider>
   );
 }
 
-const ChildrenComponent = ({ children }: { children: React.ReactNode }) => {
+const ChildrenComponent = ({ component }: { component: React.ReactNode }) => {
 
   const session = useSession();
   const router = useRouter();
@@ -24,6 +24,6 @@ const ChildrenComponent = ({ children }: { children: React.ReactNode }) => {
   }, [session])
 
   return (
-    <>{children}</>
+    <>{component}</>
   )
 }

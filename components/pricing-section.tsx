@@ -37,7 +37,7 @@ export function PricingSection() {
               Choose the Perfect Plan for Your Needs
             </h2>
             <p className="text-muted-foreground md:text-lg">
-              Whether you're an individual creator or a growing business, we have a plan that fits your requirements.
+              Whether you&apos;re an individual creator or a growing business, we have a plan that fits your requirements.
             </p>
           </motion.div>
 

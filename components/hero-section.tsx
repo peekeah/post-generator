@@ -99,11 +99,11 @@ export function HeroSection() {
               <span className="text-sm font-medium" > Generated Post </span>
               < div className="rounded-md border bg-card p-3 text-sm" >
                 <p>
-                  🚀 <span className="font-medium" > Exciting News! </span> We're thrilled to announce the launch of our
+                  🚀 <span className="font-medium" > Exciting News! </span> We&apos;re thrilled to announce the launch of our
                   new product that will revolutionize how you work.
                 </p>
                 < p className="mt-2" >
-                  After months of development and feedback from our amazing beta testers, we're ready to share it with
+                  After months of development and feedback from our amazing beta testers, we&apos;re ready to share it with
                   the world.
                 </p>
                 < p className="mt-2" >✨ Key features include: </p>
@@ -113,7 +113,7 @@ export function HeroSection() {
                   < li > Real - time collaboration capabilities </li>
                 </ul>
                 < p className="mt-2" > Early adopters are seeing a 40 % increase in productivity! </p>
-                < p className="mt-2" > Learn more at the link below.Who's excited to try it out? 👇</p>
+                < p className="mt-2" > Learn more at the link below.Who&apos;s excited to try it out? 👇</p>
               </div>
             </div>
             < div className="flex justify-end gap-2" >

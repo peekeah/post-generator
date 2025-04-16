@@ -84,7 +84,7 @@ const GeneratedPosts = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleCopy(post.content)}>
+                    <DropdownMenuItem onClick={() => handleCopy(post.generatedContent)}>
                       <Copy className="h-4 w-4 mr-2" /> Copy
                     </DropdownMenuItem>
                     <DropdownMenuItem>
@@ -101,7 +101,7 @@ const GeneratedPosts = () => {
               </CardContent>
               <CardFooter className="p-4 pt-0 flex justify-between">
                 <span className="text-xs px-2 py-1 rounded-full bg-muted capitalize">{mappings.get(post.tone)}</span>
-                <Button variant="ghost" size="sm" onClick={() => handleCopy(post.content)}>
+                <Button variant="ghost" size="sm" onClick={() => handleCopy(post.generatedContent)}>
                   <Copy className="h-3 w-3 mr-1" /> Copy
                 </Button>
               </CardFooter>
