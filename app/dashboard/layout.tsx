@@ -81,17 +81,15 @@ export default function DashboardLayout({ children,
   }
 
   return (
-    <main >
-      <SidebarProvider>
-        <div className="flex w-full h-full">
-          <AppSidebar
-            activeSection={activeSection}
-            navItems={navItems}
-          />
-          <div className="flex-1 flex flex-col justify-center">
-            <AppHeader activeSection={activeSection} />
-            <div className="p-6 bg-muted/30 flex-1">{children}</div>
-          </div>
+    <main>
+      <SidebarProvider className="flex w-ful h-full">
+        <AppSidebar
+          activeSection={activeSection}
+          navItems={navItems}
+        />
+        <div className="flex-1 flex flex-col justify-center w-full">
+          <AppHeader activeSection={activeSection} />
+          <div className="p-6 bg-muted/30 flex-1">{children}</div>
         </div>
       </SidebarProvider>
     </main>
@@ -116,7 +114,6 @@ const AppSidebar = ({ navItems, activeSection }: { activeSection: ActiveSection,
               <SidebarMenuButton
                 asChild
                 isActive={activeSection === item.id}
-              // className="hover:bg-[#98D2C0]/20 data-[active=true]:bg-[#98D2C0]/30 data-[active=true]:text-[#205781]"
               >
                 <Link
                   className={cn(
@@ -169,15 +166,6 @@ const AppHeader = ({ activeSection }: { activeSection: ActiveSection }) => {
         {activeSection === "settings" && "Settings"}
       </h1>
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-        </Button>
-        <Button variant="ghost" size="icon"
-        // onClick={toggleDarkMode}
-        >
-          {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2">
