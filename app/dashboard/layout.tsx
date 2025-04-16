@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { FileText, Home, Settings, CreditCard, LucideProps, Bell, ChevronDown, Moon, Sun } from "lucide-react"
+import { FileText, Home, Settings, CreditCard, LucideProps, Bell, ChevronDown, Moon, Sun, Menu } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -14,6 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 import { signOut, useSession } from "next-auth/react"
 import { Spinner } from "@/components/ui/spinner"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, useSidebar } from "@/components/ui/sidebar"
 
 interface NavItem {
   id: string;
@@ -80,51 +81,61 @@ export default function DashboardLayout({ children,
   }
 
   return (
-    <main className="flex w-full h-full">
-      <AppSidebar
-        activeSection={activeSection}
-        navItems={navItems}
-      />
-      <div className="flex-1 flex flex-col justify-center">
-        <AppHeader activeSection={activeSection} />
-        <div className="p-6 bg-muted/30 flex-1">{children}</div>
-      </div>
+    <main >
+      <SidebarProvider>
+        <div className="flex w-full h-full">
+          <AppSidebar
+            activeSection={activeSection}
+            navItems={navItems}
+          />
+          <div className="flex-1 flex flex-col justify-center">
+            <AppHeader activeSection={activeSection} />
+            <div className="p-6 bg-muted/30 flex-1">{children}</div>
+          </div>
+        </div>
+      </SidebarProvider>
     </main>
   )
 }
 
 const AppSidebar = ({ navItems, activeSection }: { activeSection: ActiveSection, navItems: NavItem[] }) => {
   return (
-    <div className="w-64 border-r bg-background h-screen flex flex-col">
-      <div className="p-6">
+    <Sidebar>
+      <SidebarHeader className="p-6">
         <h1 className="text-xl font-bold flex items-center gap-2">
           <span className="bg-primary text-primary-foreground w-8 h-8 rounded-md flex items-center justify-center">
             AI
           </span>
           PostGen
         </h1>
-      </div>
-      <nav className="flex-1 p-4">
-        <ul className="space-y-2">
+      </SidebarHeader>
+      <SidebarContent className="flex-1 p-4">
+        <SidebarMenu className="space-y-2">
           {navItems.map((item) => (
-            <li key={item.id}>
-              <Link
-                className={cn(
-                  "w-full flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors",
-                  activeSection === item.id
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                )}
-                href={item.link}
+            <SidebarMenuItem key={item.id}>
+              <SidebarMenuButton
+                asChild
+                isActive={activeSection === item.id}
+              // className="hover:bg-[#98D2C0]/20 data-[active=true]:bg-[#98D2C0]/30 data-[active=true]:text-[#205781]"
               >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </Link>
-            </li>
+                <Link
+                  className={cn(
+                    "w-full flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-colors",
+                    activeSection === item.id
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  )}
+                  href={item.link}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.label}
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           ))}
-        </ul>
-      </nav>
-      <div className="p-4 border-t">
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarFooter className="p-4 border-t">
         <div className="bg-muted/50 rounded-lg p-3">
           <p className="text-sm font-medium">Free Plan</p>
           <p className="text-xs text-muted-foreground mt-1">10/30 posts generated</p>
@@ -135,17 +146,22 @@ const AppSidebar = ({ navItems, activeSection }: { activeSection: ActiveSection,
             Upgrade Plan
           </button>
         </div>
-      </div>
-    </div>
+      </SidebarFooter>
+    </Sidebar>
   )
 }
 
 const AppHeader = ({ activeSection }: { activeSection: ActiveSection }) => {
   const [darkMode, setDarkMode] = useState(0);
   console.log("aa:", activeSection)
+  const { toggleSidebar } = useSidebar();
 
   return (
     <header className="h-16 border-b flex items-center justify-between px-6 bg-background">
+      <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden text-[#205781]">
+        <Menu className="h-5 w-5" />
+        <span className="sr-only">Toggle menu</span>
+      </Button>
       <h1 className="text-xl font-semibold">
         {activeSection === "post-generator" && "Post Generator"}
         {activeSection === "generated-posts" && "Generated Posts"}
