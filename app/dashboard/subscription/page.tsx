@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card"
 import { useContext } from "react"
 import { SubscriptionContext } from "@/context/subscription"
+import { TestModeMessage } from "@/components/test-mode-dilogue"
 
 export default function Subscriptions() {
   const { subscription } = useContext(SubscriptionContext);
@@ -87,7 +88,11 @@ export default function Subscriptions() {
             </ul>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Upgrade to Pro</Button>
+            <TestModeMessage
+              triggerButton={
+                <Button className="w-full">Upgrade to Pro</Button>
+              }
+            />
           </CardFooter>
         </Card>
 
@@ -109,9 +114,13 @@ export default function Subscriptions() {
             <p className="text-sm font-medium">Billing Cycle</p>
             <p className="text-sm text-muted-foreground">Renew on {subscription.nextBillingDate}</p>
           </div>
-          <Button variant="outline" size="sm">
-            Manage Billing
-          </Button>
+          <TestModeMessage
+            triggerButton={
+              <Button variant="outline" size="sm">
+                Manage Billing
+              </Button>
+            }
+          />
         </div>
       </div>
     </div>

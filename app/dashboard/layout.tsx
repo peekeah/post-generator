@@ -18,6 +18,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import axios from "axios"
 import { SubscriptionContext, SubscriptionProvider } from "@/context/subscription"
 import { addMonths, format } from "date-fns"
+import { TestModeMessage } from "@/components/test-mode-dilogue"
 
 interface NavItem {
   id: string;
@@ -163,9 +164,13 @@ const AppSidebar = ({ navItems, activeSection }: { activeSection: ActiveSection,
           <div className="h-1.5 bg-muted mt-2 rounded-full overflow-hidden">
             <div className="bg-primary h-full w-1/3 rounded-full"></div>
           </div>
-          <button className="w-full mt-3 text-xs bg-primary/10 text-primary py-1.5 rounded-md font-medium hover:bg-primary/20 transition-colors">
-            Upgrade Plan
-          </button>
+          <TestModeMessage
+            triggerButton={
+              <button className="w-full mt-3 text-xs bg-primary/10 text-primary py-1.5 rounded-md font-medium hover:bg-primary/20 transition-colors">
+                Upgrade Plan
+              </button>
+            }
+          />
         </div>
       </SidebarFooter>
     </Sidebar>
