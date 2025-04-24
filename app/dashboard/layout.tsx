@@ -7,7 +7,7 @@ import { FileText, Home, Settings, CreditCard, LucideProps, Bell, ChevronDown, M
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { ForwardRefExoticComponent, RefAttributes, useEffect, useState } from "react"
+import { ForwardRefExoticComponent, RefAttributes, useContext, useEffect, useState } from "react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -15,6 +15,9 @@ import { Button } from "@/components/ui/button"
 import { signOut, useSession } from "next-auth/react"
 import { Spinner } from "@/components/ui/spinner"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, useSidebar } from "@/components/ui/sidebar"
+import axios from "axios"
+import { SubscriptionContext, SubscriptionProvider } from "@/context/subscription"
+import { addMonths, format } from "date-fns"
 
 interface NavItem {
   id: string;
@@ -82,21 +85,42 @@ export default function DashboardLayout({ children,
 
   return (
     <main>
-      <SidebarProvider className="flex w-ful h-full">
-        <AppSidebar
-          activeSection={activeSection}
-          navItems={navItems}
-        />
-        <div className="flex-1 flex flex-col justify-center w-full">
-          <AppHeader activeSection={activeSection} />
-          <div className="p-6 bg-muted/30 flex-1">{children}</div>
-        </div>
-      </SidebarProvider>
+      <SubscriptionProvider>
+        <SidebarProvider className="flex w-ful h-full">
+          <AppSidebar
+            activeSection={activeSection}
+            navItems={navItems}
+          />
+          <div className="flex-1 flex flex-col justify-center w-full">
+            <AppHeader activeSection={activeSection} />
+            <div className="p-6 bg-muted/30 flex-1">{children}</div>
+          </div>
+        </SidebarProvider>
+      </SubscriptionProvider>
     </main>
   )
 }
 
 const AppSidebar = ({ navItems, activeSection }: { activeSection: ActiveSection, navItems: NavItem[] }) => {
+  const { subscription, updateSubscriptionValues } = useContext(SubscriptionContext)
+
+  useEffect(() => {
+    axios.get("/api/subscription")
+      .then(res => {
+        const resData = res?.data?.data;
+        const totalUsage = resData?.usage?.totalUsage;
+        const postLimit = resData?.usage?.postLimit;
+        const startDate = resData?.subscription?.startDate;
+        const nextBillingDate = addMonths(startDate, 1);
+        const nextBillingDateStr = format(nextBillingDate, "MMMM d, yyyy");
+        updateSubscriptionValues({
+          totalUsage,
+          postLimit,
+          nextBillingDate: nextBillingDateStr,
+        })
+      })
+  }, [])
+
   return (
     <Sidebar>
       <SidebarHeader className="p-6">
@@ -135,7 +159,7 @@ const AppSidebar = ({ navItems, activeSection }: { activeSection: ActiveSection,
       <SidebarFooter className="p-4 border-t">
         <div className="bg-muted/50 rounded-lg p-3">
           <p className="text-sm font-medium">Free Plan</p>
-          <p className="text-xs text-muted-foreground mt-1">10/30 posts generated</p>
+          <p className="text-xs text-muted-foreground mt-1">{subscription.totalUsage}/{subscription.postLimit} posts generated</p>
           <div className="h-1.5 bg-muted mt-2 rounded-full overflow-hidden">
             <div className="bg-primary h-full w-1/3 rounded-full"></div>
           </div>

@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    const usage = calculateUsage(token?.sub)
+    const usage = await calculateUsage(token?.sub)
 
     return NextResponse.json({
       status: true,

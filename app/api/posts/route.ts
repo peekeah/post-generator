@@ -6,7 +6,11 @@ import { NextRequest } from "next/server";
 export async function GET() {
   try {
 
-    const dbRes = await prisma.socialMediaPost.findMany();
+    const dbRes = await prisma.socialMediaPost.findMany({
+      orderBy: {
+        createdAt: "desc"
+      }
+    });
     return new Response(
       JSON.stringify({
         status: true,

@@ -12,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useState } from "react"
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
+import { Select } from "@/components/ui/select";
 
 export default function DashboardPage() {
 
@@ -65,6 +66,8 @@ export default function DashboardPage() {
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">Platform</label>
+            <Select>
+            </Select>
             <Tabs defaultValue="linkedin" value={platform} onValueChange={setPlatform} className="w-full">
               <TabsList className="grid grid-cols-4 w-full">
                 <TabsTrigger value="linkedin">LinkedIn</TabsTrigger>

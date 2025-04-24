@@ -2,17 +2,19 @@
 
 import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { useEffect } from "react"
-import axios from "axios"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
+import { useContext } from "react"
+import { SubscriptionContext } from "@/context/subscription"
 
 export default function Subscriptions() {
-
-  useEffect(() => {
-    axios.get("/api/subscription")
-      .then(res => console.log("rr:", res))
-
-  }, [])
+  const { subscription } = useContext(SubscriptionContext);
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -96,7 +98,7 @@ export default function Subscriptions() {
         <div className="mt-4">
           <div className="flex justify-between mb-2">
             <span className="text-sm font-medium">Posts Generated</span>
-            <span className="text-sm font-medium">10/30</span>
+            <span className="text-sm font-medium">{subscription.totalUsage}/{subscription.postLimit}</span>
           </div>
           <div className="h-2 bg-muted rounded-full overflow-hidden">
             <div className="bg-primary h-full w-1/3 rounded-full"></div>
@@ -105,7 +107,7 @@ export default function Subscriptions() {
         <div className="mt-6 flex justify-between items-center">
           <div>
             <p className="text-sm font-medium">Billing Cycle</p>
-            <p className="text-sm text-muted-foreground">Renews on April 23, 2025</p>
+            <p className="text-sm text-muted-foreground">Renew on {subscription.nextBillingDate}</p>
           </div>
           <Button variant="outline" size="sm">
             Manage Billing
@@ -115,5 +117,3 @@ export default function Subscriptions() {
     </div>
   )
 }
-
-
