@@ -1,4 +1,4 @@
-import { ReturnError } from "@/lib/error"
+import { CustomError } from "@/lib/error"
 import { prisma } from "@/lib/utils";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server"
@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
 
   } catch (err) {
     console.log("err:", err)
-    return ReturnError(err instanceof Error ? err?.message : undefined)
+    return CustomError(err instanceof Error ? err?.message : undefined)
   }
 }
 
@@ -58,6 +58,6 @@ export const GET = async (req: NextRequest) => {
 
   } catch (err) {
     console.log("err:", err)
-    return ReturnError(err instanceof Error ? err?.message : undefined)
+    return CustomError(err instanceof Error ? err?.message : undefined)
   }
 }

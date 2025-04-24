@@ -43,10 +43,11 @@ export default function DashboardPage() {
         throw new Error()
       }
 
-    } catch (err) {
+    } catch (err: any) {
+      const error = err?.response?.data?.error as string;
       toast({
         variant: "destructive",
-        description: "Error while generating caption"
+        description: error || "Error while generating caption"
       })
     } finally {
       setIsGenerating(false)

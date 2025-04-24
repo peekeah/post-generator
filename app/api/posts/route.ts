@@ -2,6 +2,7 @@ import { OpenAI } from "openai";
 import { prisma } from "@/lib/utils";
 import { getToken } from "next-auth/jwt";
 import { NextRequest } from "next/server";
+import { CustomError } from "@/lib/error";
 
 export async function GET() {
   try {
@@ -78,6 +79,31 @@ export async function POST(
       !tone
     ) {
       throw new Error("validation error")
+    }
+
+    // Validate plan
+    const activeSubscription = await prisma.subscription.findFirstOrThrow({
+      where: {
+        userId: token?.sub,
+        status: "ACTIVE"
+      },
+      include: {
+        plan: true
+      }
+    });
+
+    const userPosts = await prisma.socialMediaPost.findMany({
+      where: {
+        userId: token?.sub,
+        createdAt: {
+          gte: new Date(new Date().setDate(1)), // First day of current month
+          lt: new Date(new Date().setMonth(new Date().getMonth() + 1, 1))
+        }
+      }
+    })
+
+    if (userPosts?.length === activeSubscription.plan.postLimit) {
+      return CustomError("Your current plan limit has been exhausted. Please upgrade to continue.", 403)
     }
 
     // LLM Call

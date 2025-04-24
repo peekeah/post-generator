@@ -1,4 +1,4 @@
-import { ReturnError } from "@/lib/error";
+import { CustomError } from "@/lib/error";
 import { prisma } from "@/lib/utils";
 import { v2 as cloudinary } from "cloudinary";
 import { getToken } from "next-auth/jwt";
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const file = files.get("avatar") as File;
 
     if (!file) {
-      return ReturnError("File is required")
+      return CustomError("File is required")
     }
 
     if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       data: "Successfully updated profile picture"
     });
   } catch (err) {
-    return ReturnError(err instanceof Error ? err?.message : undefined)
+    return CustomError(err instanceof Error ? err?.message : undefined)
   }
 
 }

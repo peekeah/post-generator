@@ -1,4 +1,4 @@
-import { ReturnError } from "@/lib/error";
+import { CustomError } from "@/lib/error";
 import { prisma } from "@/lib/utils"
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
     })
   } catch (err: unknown) {
     console.log("error:", err)
-    return ReturnError(err instanceof Error ? err?.message : undefined)
+    return CustomError(err instanceof Error ? err?.message : undefined)
   }
 }
 
@@ -72,10 +72,10 @@ export async function POST(request: NextRequest) {
       id: string, planId: string
     } = await request.json();
 
-    if (!planId) return ReturnError("PlanId is required", 403)
+    if (!planId) return CustomError("PlanId is required", 403)
 
     const token = await getToken({ req: request });
-    if (!token?.sub) return ReturnError("Unauthorized", 401)
+    if (!token?.sub) return CustomError("Unauthorized", 401)
 
     // Purchase logic here
     const purchase = await prisma.subscription.findFirstOrThrow({
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
   } catch (err) {
     console.log("ee:", err)
-    return ReturnError(err instanceof Error ? err?.message : undefined)
+    return CustomError(err instanceof Error ? err?.message : undefined)
   }
 }
 
